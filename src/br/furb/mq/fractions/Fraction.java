@@ -1,5 +1,7 @@
 package br.furb.mq.fractions;
 
+import java.math.BigInteger;
+
 /**
  * Fraction.java - a Java representation of a fraction <br>
  * Author: Diane Kramer<br>
@@ -27,7 +29,7 @@ package br.furb.mq.fractions;
 
 public class Fraction {
 	// member variables
-	private int numerator, denominator; // stores the fraction data
+	private BigInteger numerator, denominator; // stores the fraction data
 
 	/**********************************************************
 	 * Method: Default Constructor Purpose: Create a new Fraction object and
@@ -36,7 +38,7 @@ public class Fraction {
 	 * denominator set to 0
 	 ***********************************************************/
 	public Fraction() {
-		numerator = denominator = 0;
+		numerator = denominator = BigInteger.ZERO;
 	}
 
 	/********************************************/
@@ -48,7 +50,7 @@ public class Fraction {
 	 * variable Parameters: None Preconditions: None Postconditions: None
 	 * Returns: integer data stored in numerator member variable
 	 ***********************************************************/
-	public int getNumerator() {
+	public BigInteger getNumerator() {
 		return numerator;
 	}
 
@@ -58,7 +60,7 @@ public class Fraction {
 	 * Postconditions: the value of num will be stored in numerator member
 	 * variable
 	 ***********************************************************/
-	public void setNumerator(int num) {
+	public void setNumerator(BigInteger num) {
 		numerator = num;
 	}
 
@@ -67,7 +69,7 @@ public class Fraction {
 	 * variable Parameters: None Preconditions: None Postconditions: None
 	 * Returns: integer data stored in denominator member variable
 	 ***********************************************************/
-	public int getDenominator() {
+	public BigInteger getDenominator() {
 		return denominator;
 	}
 
@@ -77,7 +79,7 @@ public class Fraction {
 	 * Postconditions: the value of den will be stored in denominator member
 	 * variable
 	 ***********************************************************/
-	public void setDenominator(int den) {
+	public void setDenominator(BigInteger den) {
 		denominator = den;
 	}
 
@@ -94,10 +96,10 @@ public class Fraction {
 	 ***********************************************************/
 	public Fraction add(Fraction b) {
 		// check preconditions
-		if ((denominator == 0) || (b.denominator == 0))
+		if ((denominator == BigInteger.ZERO) || (b.denominator == BigInteger.ZERO))
 			throw new IllegalArgumentException("invalid denominator");
 		// find lowest common denominator
-		int common = lcd(denominator, b.denominator);
+		BigInteger common = lcd(denominator, b.denominator);
 		// convert fractions to lcd
 		Fraction commonA = new Fraction();
 		Fraction commonB = new Fraction();
@@ -106,7 +108,7 @@ public class Fraction {
 		// create new fraction to return as sum
 		Fraction sum = new Fraction();
 		// calculate sum
-		sum.numerator = commonA.numerator + commonB.numerator;
+		sum.numerator = commonA.numerator.add(commonB.numerator);
 		sum.denominator = common;
 		// reduce the resulting fraction
 		sum = sum.reduce();
@@ -122,10 +124,10 @@ public class Fraction {
 	 ***********************************************************/
 	public Fraction subtract(Fraction b) {
 		// check preconditions
-		if ((denominator == 0) || (b.denominator == 0))
+		if ((denominator == BigInteger.ZERO) || (b.denominator == BigInteger.ZERO))
 			throw new IllegalArgumentException("invalid denominator");
 		// find lowest common denominator
-		int common = lcd(denominator, b.denominator);
+		BigInteger common = lcd(denominator, b.denominator);
 		// convert fractions to lcd
 		Fraction commonA = new Fraction();
 		Fraction commonB = new Fraction();
@@ -134,7 +136,7 @@ public class Fraction {
 		// create new fraction to return as difference
 		Fraction diff = new Fraction();
 		// calculate difference
-		diff.numerator = commonA.numerator - commonB.numerator;
+		diff.numerator = commonA.numerator.subtract(commonB.numerator);
 		diff.denominator = common;
 		// reduce the resulting fraction
 		diff = diff.reduce();
@@ -150,13 +152,13 @@ public class Fraction {
 	 ***********************************************************/
 	public Fraction multiply(Fraction b) {
 		// check preconditions
-		if ((denominator == 0) || (b.denominator == 0))
+		if ((denominator == BigInteger.ZERO) || (b.denominator == BigInteger.ZERO))
 			throw new IllegalArgumentException("invalid denominator");
 		// create new fraction to return as product
 		Fraction product = new Fraction();
 		// calculate product
-		product.numerator = numerator * b.numerator;
-		product.denominator = denominator * b.denominator;
+		product.numerator = numerator.multiply(b.numerator);
+		product.denominator = denominator.multiply(b.denominator);
 		// reduce the resulting fraction
 		product = product.reduce();
 		return product;
@@ -171,42 +173,16 @@ public class Fraction {
 	 ***********************************************************/
 	public Fraction divide(Fraction b) {
 		// check preconditions
-		if ((denominator == 0) || (b.numerator == 0))
+		if ((denominator == BigInteger.ZERO) || (b.numerator == BigInteger.ZERO))
 			throw new IllegalArgumentException("invalid denominator");
 		// create new fraction to return as result
 		Fraction result = new Fraction();
 		// calculate result
-		result.numerator = numerator * b.denominator;
-		result.denominator = denominator * b.numerator;
+		result.numerator = numerator.multiply(b.denominator);
+		result.denominator = denominator.multiply(b.numerator);
 		// reduce the resulting fraction
 		result = result.reduce();
 		return result;
-	}
-
-	/**********************************************************
-	 * Method: input Purpose: Retrieve values from the user via keyboard input
-	 * for numerator and denominator of the "this" object. A valid integer value
-	 * must be entered for the numerator, and a non-zero integer value must be
-	 * entered for denominator. Parameters: None Preconditions: SavitchIn class
-	 * must be available to read keyboard input. User needs to see command line
-	 * window to be prompted for input. Postconditions: The "this" object will
-	 * contain the valid data entered by the user.
-	 ***********************************************************/
-	public void input() {
-		// prompt user to enter numerator
-		System.out.print("Please enter an integer for numerator: ");
-		// get user input
-		numerator = SavitchIn.readLineInt();
-		// prompt user to enter denominator in a loop to prevent
-		// an invalid (zero) value for denominator
-		do {
-			System.out
-					.print("Please enter a non-zero integer for denominator: ");
-			denominator = SavitchIn.readLineInt();
-			// make sure it is non-zero
-			if (denominator == 0)
-				System.out.println("Invalid value.  Please try again.");
-		} while (denominator == 0);
 	}
 
 	/**********************************************************
@@ -243,10 +219,10 @@ public class Fraction {
 	 * Postconditions: None Returns: the lowest common denominator between
 	 * denom1 and denom2
 	 ***********************************************************/
-	private int lcd(int denom1, int denom2) {
-		int factor = denom1;
-		while ((denom1 % denom2) != 0)
-			denom1 += factor;
+	private BigInteger lcd(BigInteger denom1, BigInteger denom2) {
+		BigInteger factor = denom1;
+		while ((denom1.mod(denom2)) != BigInteger.ZERO)
+			denom1 = denom1.add(factor);
 		return denom1;
 	}
 
@@ -259,11 +235,11 @@ public class Fraction {
 	 * to Euclid for inventing the gcd algorithm, and to Prof. Joyce for
 	 * explaining it to me.
 	 ***********************************************************/
-	private int gcd(int denom1, int denom2) {
-		int factor = denom2;
-		while (denom2 != 0) {
+	private BigInteger gcd(BigInteger denom1, BigInteger denom2) {
+		BigInteger factor = denom2;
+		while (denom2 != BigInteger.ZERO) {
 			factor = denom2;
-			denom2 = denom1 % denom2;
+			denom2 = denom1.mod(denom2);
 			denom1 = factor;
 		}
 		return denom1;
@@ -278,10 +254,10 @@ public class Fraction {
 	 * Returns: A new fraction which is equivalent to the "this" fraction, but
 	 * has been converted to the new denominator called common
 	 ***********************************************************/
-	private Fraction convert(int common) {
+	private Fraction convert(BigInteger common) {
 		Fraction result = new Fraction();
-		int factor = common / denominator;
-		result.numerator = numerator * factor;
+		BigInteger factor = common.divide(denominator);
+		result.numerator = numerator.multiply(factor);
 		result.denominator = common;
 		return result;
 	}
@@ -295,22 +271,22 @@ public class Fraction {
 	 ***********************************************************/
 	private Fraction reduce() {
 		Fraction result = new Fraction();
-		int common = 0;
+		BigInteger common = BigInteger.ZERO;
 		// get absolute values for numerator and denominator
-		int num = Math.abs(numerator);
-		int den = Math.abs(denominator);
+		BigInteger num = numerator.abs();
+		BigInteger den = denominator.abs();
 		// figure out which is less, numerator or denominator
-		if (num > den)
+		if (num.compareTo(den) == 1)
 			common = gcd(num, den);
-		else if (num < den)
+		else if (num.compareTo(den) == -1)
 			common = gcd(den, num);
 		else
 			// if both are the same, don't need to call gcd
 			common = num;
 
 		// set result based on common factor derived from gcd
-		result.numerator = numerator / common;
-		result.denominator = denominator / common;
+		result.numerator = numerator.divide(common);
+		result.denominator = denominator.divide(common);
 		return result;
 	}
 
@@ -324,10 +300,10 @@ public class Fraction {
 		Fraction f2 = new Fraction(); // used to test methods
 
 		// one way to set up fractions is simply to hard-code some values
-		f1.setNumerator(1);
-		f1.setDenominator(3);
-		f2.setNumerator(1);
-		f2.setDenominator(6);
+		f1.setNumerator(new BigInteger("1"));
+		f1.setDenominator(new BigInteger("3"));
+		f2.setNumerator(new BigInteger("1"));
+		f2.setDenominator(new BigInteger("6"));
 
 		// try some arithmetic on these fractions
 		Fraction result = new Fraction();
@@ -349,37 +325,5 @@ public class Fraction {
 		result = f2.subtract(f1);
 		// output results
 		System.out.println(f2 + " - " + f1 + " = " + result);
-
-		// another way to set up fractions is to get user input
-		System.out.println();
-		System.out.println("Fraction 1:");
-		f1.input();
-		System.out.println();
-		System.out.println("Fraction 2:");
-		f2.input();
-		System.out.println();
-
-		// test multiplication
-		result = f1.multiply(f2);
-
-		// another way to output results is to use the output method
-		// this uses the toString method indirectly
-		f1.output();
-		System.out.print(" * ");
-		f2.output();
-		System.out.print(" = ");
-		result.output();
-		System.out.println();
-
-		// test division
-		result = f1.divide(f2);
-
-		// output results
-		f1.output();
-		System.out.print(" / ");
-		f2.output();
-		System.out.print(" = ");
-		result.output();
-		System.out.println();
 	}
 }
