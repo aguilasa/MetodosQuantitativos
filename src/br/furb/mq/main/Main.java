@@ -1,10 +1,7 @@
 package br.furb.mq.main;
 
-import java.math.BigInteger;
-import java.util.List;
-
 import br.furb.mq.fractions.Fraction;
-import br.furb.mq.prime.Prime;
+import br.furb.mq.functions.FunctionTest01;
 
 public class Main {
 
@@ -12,17 +9,17 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+
 		System.out.println("Métodos quantitativos");
-		
-//		List<BigInteger> primes =  Prime.getInstance().getPrimes();
-//		System.out.println(primes);
-		
-		Fraction fracao = new Fraction();
-		fracao.setNumerator(new BigInteger("39"));
-		fracao.setDenominator(new BigInteger("26"));
-		
-		System.out.println(fracao.reduce());
+
+		// List<BigInteger> primes = Prime.getInstance().getPrimes();
+		// System.out.println(primes);
+
+		Fraction fracao = new Fraction("5595", "4096");
+
+		FunctionTest01 f = new FunctionTest01();
+
+		System.out.println(f.f(fracao));
 	}
 
 }
