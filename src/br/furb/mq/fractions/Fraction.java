@@ -269,7 +269,7 @@ public class Fraction {
 	 * Postconditions: None Returns: A new fraction which is equivalent to a,
 	 * but has been reduced to its lowest numerical form
 	 ***********************************************************/
-	private Fraction reduce() {
+	public Fraction reduce() {
 		Fraction result = new Fraction();
 		BigInteger common = BigInteger.ZERO;
 		// get absolute values for numerator and denominator
