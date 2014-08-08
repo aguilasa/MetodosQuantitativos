@@ -123,6 +123,11 @@ public class Fraction {
 
 		return result;
 	}
+	
+	public boolean isNegative()
+	{
+		return (this.numerator.compareTo(BigInteger.ZERO) < 0);
+	}
 
 	public void output() {
 		System.out.print(this);
