@@ -2,7 +2,7 @@ package br.furb.mq.fractions;
 
 import java.math.BigInteger;
 
-public class Fraction {
+public class Fraction implements Comparable<Fraction> {
 	// member variables
 	private BigInteger numerator, denominator; // stores the fraction data
 
@@ -219,5 +219,55 @@ public class Fraction {
 		result = f2.subtract(f1);
 		// output results
 		System.out.println(f2 + " - " + f1 + " = " + result);
+	}
+
+	@Override
+	public int compareTo(Fraction o) {
+		if (this == o) return 0;
+		
+		if (this.numerator.divide(this.denominator).doubleValue() < o.getNumerator().divide(this.getDenominator()).doubleValue()) return -1;
+		if (this.numerator.divide(this.denominator).doubleValue() > o.getNumerator().divide(this.getDenominator()).doubleValue()) return 1;
+		
+		return 0;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((denominator == null) ? 0 : denominator.hashCode());
+		result = prime * result
+				+ ((numerator == null) ? 0 : numerator.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Fraction)) {
+			return false;
+		}
+		Fraction other = (Fraction) obj;
+		if (denominator == null) {
+			if (other.denominator != null) {
+				return false;
+			}
+		} else if (!denominator.equals(other.denominator)) {
+			return false;
+		}
+		if (numerator == null) {
+			if (other.numerator != null) {
+				return false;
+			}
+		} else if (!numerator.equals(other.numerator)) {
+			return false;
+		}
+		return true;
 	}
 }
