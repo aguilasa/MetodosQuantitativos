@@ -58,11 +58,11 @@ public class Bissection {
 
 	private Fraction calcError(Fraction fractionA, Fraction fractionB) {
 		Fraction f = fractionA.subtract(fractionB).divide(fractionA);
-		
+
 		if (f.isNegative()) {
 			f = f.multiply(new Fraction("-1"));
 		}
-		
+
 		return f;
 	}
 
@@ -106,25 +106,24 @@ public class Bissection {
 
 			Fraction fB = f.f(listB.get(index));
 			listFb.add(fB);
-			
+
 			if (index > 0) {
-				Fraction error = calcError(listM.get(index),
-						listM.get(index - 1));
+				Fraction error = calcError(listM.get(index), listM.get(index - 1));
 				listError.add(error);
 			}
-			
+
 			if (index > 18)
 				break;
 
-			if (!(fA.isNegative() & fM.isNegative())) {
+			if (!fA.isNegative() && fM.isNegative() && fB.isNegative()) {
 				listA.add(listA.get(index));
 				listB.add(listM.get(index));
 			} else {
 				listA.add(listM.get(index));
 				listB.add(listB.get(index));
-			}			
+			}
 
-			index++;		
+			index++;
 		}
 	}
 
